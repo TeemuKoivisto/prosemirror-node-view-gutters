@@ -28,6 +28,7 @@ yarn-error.log*
 tmp/
 
 .eslintcache
+.cache
 
 # Svelte
 .svelte-kit

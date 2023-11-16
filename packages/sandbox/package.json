@@ -1,0 +1,23 @@
+{
+  "name": "sandbox",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "watch": "rimraf dist && vite build --watch"
+  },
+  "dependencies": {
+    "prosemirror-commands": "^1.5.2",
+    "prosemirror-keymap": "^1.2.2",
+    "prosemirror-model": "^1.19.3",
+    "prosemirror-state": "^1.4.3",
+    "prosemirror-transform": "^1.8.0",
+    "prosemirror-view": "^1.32.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9"
+  },
+  "keywords": ["typescript", "javascript"]
+}
