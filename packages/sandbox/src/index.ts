@@ -1,40 +1,9 @@
 import { EditorState } from 'prosemirror-state'
-import { EditorView, NodeView } from 'prosemirror-view'
+import { EditorView } from 'prosemirror-view'
 import { keymap } from 'prosemirror-keymap'
-import { DOMSerializer, Node as PMNode, Schema } from 'prosemirror-model'
+import { Schema } from 'prosemirror-model'
 import { baseKeymap } from 'prosemirror-commands'
-
-class CustomNodeView implements NodeView {
-  dom?: HTMLElement
-  contentDOM?: HTMLElement
-  node: PMNode
-
-  constructor(
-    node: PMNode,
-    readonly view: EditorView
-  ) {
-    this.node = node
-    this.view = view
-
-    const toDOM = this.node.type.spec.toDOM
-    const { dom, contentDOM } = DOMSerializer.renderSpec(document, toDOM(this.node))
-    this.contentDOM = contentDOM
-    this.dom = document.createElement(this.node.type.spec.inline ? 'span' : 'div')
-    this.dom.classList.add('block')
-    this.dom.appendChild(this.createGutter())
-    if (contentDOM) {
-      this.dom.appendChild(contentDOM)
-    }
-    this.dom.appendChild(this.createGutter())
-  }
-
-  createGutter(): HTMLElement {
-    const gutter = document.createElement('div')
-    gutter.setAttribute('contenteditable', 'false')
-    gutter.classList.add('gutter')
-    return gutter
-  }
-}
+import { CustomNodeView } from './CustomNodeView'
 
 const schema = new Schema({
   nodes: {
@@ -42,6 +11,9 @@ const schema = new Schema({
       content: 'block+'
     },
     paragraph: {
+      attrs: {
+        name: { default: null }
+      },
       content: 'inline*',
       group: 'block',
       selectable: false,
@@ -57,12 +29,23 @@ const schema = new Schema({
 })
 
 const state = EditorState.create({
+  doc: schema.nodes.doc.createChecked(undefined, [
+    schema.nodes.paragraph.create(),
+    schema.nodes.paragraph.create({ name: 'N2' })
+  ]),
   schema,
   plugins: [keymap(baseKeymap)]
 })
+const stateEl = document.querySelector('#state')
 const view = new EditorView(document.querySelector('#editor') as HTMLElement, {
   state,
   nodeViews: {
-    paragraph: (n, v) => new CustomNodeView(n, v)
+    paragraph: (n, v, g) => new CustomNodeView(n, v, g)
+  },
+  dispatchTransaction(tr) {
+    const state = this.state.apply(tr)
+    view.updateState(state)
+    stateEl!.innerHTML = JSON.stringify(state.toJSON())
   }
 })
+stateEl!.innerHTML = JSON.stringify(view.state.toJSON())

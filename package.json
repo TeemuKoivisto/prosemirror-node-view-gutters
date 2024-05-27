@@ -5,7 +5,8 @@
     "format": "pnpm pretty && pnpm lint",
     "pretty": "prettier --write \"**/*.+(js|cjs|mjs|jsx|json|html|css|less|scss|ts|tsx|svelte|yml|yaml|md|graphql|mdx)\" .",
     "lint": "eslint --ignore-path .gitignore --fix --ext .js,.cjs,.ts,.tsx,.svelte,.css,.scss,.html .",
-    "client": "pnpm --filter client dev"
+    "sandbox": "pnpm --filter sandbox dev",
+    "bug": "pnpm --filter bug dev"
   },
   "engines": {
     "node": ">=16",

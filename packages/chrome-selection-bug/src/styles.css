@@ -27,12 +27,10 @@ header {
   display: none;
   visibility: hidden;
 }
-.block > .name {
-  margin-top: 1rem;
-  padding-right: 1rem;
-}
-.block > .name > input {
-  width: 100%;
+.block {
+  /* display: grid causes the custom NodeView selection to bug out, works in Firefox... */
+  display: grid;
+  grid-template-columns: 128px auto 128px;
 }
 p {
   margin: 1rem 0 0 0;
