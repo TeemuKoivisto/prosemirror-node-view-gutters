@@ -37,4 +37,9 @@ header {
 }
 p {
   margin: 1rem 0 0 0;
+  min-width: 1px;
+}
+.paragraph-wrapper {
+  /* align-items: center;
+  display: flex; */
 }
